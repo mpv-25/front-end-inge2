@@ -1,1 +1,222 @@
 /* You can add global styles to this file, and also import other style files */
+/* Colores */
+:root {
+  --fondoNavbar: #0a0a0a;
+  --fondoBlanco: #ffffff;
+  --fondoAzul: #3498db;
+  --fondo-login: #e8e8e8;
+  --danger: #ff0000;
+  --fondo-input: #f2f2f2;
+  --texto-input: #848580;
+}
+
+body {
+  background-color: var(--fondo-login);
+}
+/*
+  =====================================
+  ************GENERALES*****************
+  =====================================
+  */
+.fondoOscuro {
+  background-color: var(--fondoNavbar);
+}
+.cursor {
+  cursor: pointer;
+}
+
+/*
+  =====================================
+  ************LOGIN*****************
+  =====================================
+  */
+.login {
+  background: var(--fondo-login);
+  max-width: 100%;
+  margin: 0px auto;
+  padding: 10px;
+}
+.login__formulario {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  line-height: 40px;
+  width: 500px;
+  max-width: 100%;
+  margin: 20px auto;
+  margin-bottom: 200px;
+  padding: 50px 30px;
+  padding-top: 80px;
+  border: solid var(--fondoBlanco);
+  border-radius: 10px;
+  background-color: var(--fondoBlanco);
+  color: var(--texto-input);
+}
+.login__error {
+  font-size: 0.8em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  color: var(--danger);
+}
+.login__circulo {
+  position: relative;
+  top: 90px;
+  width: 150px;
+  height: 150px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  background: var(--fondoAzul);
+  margin: 5px auto;
+  z-index: 1;
+}
+.login__circulo-icono {
+  font-size: 6em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  display: block;
+  position: relative;
+  top: 20%;
+  left: 23%;
+  margin: 5px auto;
+  text-align: center;
+  z-index: 1;
+  color: var(--fondoBlanco);
+}
+.login__correo,
+.login__password {
+  font-size: 1em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  margin: 0px 5px;
+  padding: 10px;
+  height: 60px;
+  width: 90%;
+  border: none;
+  background-color: transparent;
+}
+.login__correo:active,
+.login__password:active {
+  border: none;
+}
+.login__correo:focus,
+.login__password:focus {
+  border: none;
+}
+
+.login__correo-container,
+.login__password-container {
+  background-color: var(--fondo-input);
+  margin: 5px auto;
+  width: 100%;
+}
+
+.login__input-ico {
+  font-size: 1em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  margin: 5px;
+}
+.login__btn {
+  text-decoration: none;
+  width: 90%;
+  padding: 10px;
+  margin: 10px auto;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  color: var(--fondoBlanco);
+  background-color: var(--fondoAzul);
+  border-radius: 6px;
+  border: 2px solid var(--fondoAzul);
+  cursor: pointer;
+}
+.login__btn:hover {
+  color: var(--fondoAzul);
+  background-color: var(--fondoBlanco);
+}
+.login__recuperar {
+  text-align: center;
+  text-decoration: none;
+  margin: 10px auto;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  color: var(--texto-input);
+}
+.login__recuperar:hover {
+  color: var(--fondoAzul);
+}
+.login__btn-registrarte {
+  text-decoration: none;
+  width: 70%;
+  padding: 10px;
+  margin: 10px auto;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  color: var(--fondoBlanco);
+  background-color: var(--fondoAzul);
+  border-radius: 6px;
+  border: 2px solid var(--fondoAzul);
+  cursor: pointer;
+}
+.login__btn-registrarte:hover {
+  color: var(--fondoAzul);
+  background-color: var(--fondoBlanco);
+}
+.login__hr {
+  margin: 20px 0;
+}
+
+/*
+  =====================================
+  ************RESPONSIVE*****************
+  =====================================
+  */
+
+@media (max-width: 800px) {
+  /*
+  =====================================
+  ************LOGIN**************
+  =====================================
+  */
+  .login {
+    padding: 10px 20px;
+  }
+
+  .login__formulario {
+    width: 100%;
+    margin: 20px auto;
+  }
+  .login__circulo {
+    top: 90px;
+  }
+  .login__correo,
+  .login__password {
+    font-size: 0.8em;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    margin: 0px 5px;
+    padding: 7px;
+    height: 60px;
+    width: 80%;
+    border: none;
+    background-color: transparent;
+  }
+}
+@media screen and (max-width: 411px) {
+  /*
+  =====================================
+  ************LOGIN**************
+  =====================================
+  */
+  .login__circulo {
+    top: 90px;
+    width: 120px;
+    height: 120px;
+  }
+  .login__circulo-icono {
+    font-size: 4.5em;
+    top: 18%;
+    left: 25%;
+  }
+}

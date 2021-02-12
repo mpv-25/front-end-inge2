@@ -1,0 +1,23 @@
+<nav class="fondoOscuro navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" [routerLink]="['home']">Proyecto ING II</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li *ngIf="usuarioLogin" class="nav-item">
+            <a class="nav-link" aria-current="page" [routerLink]="['/home']" routerLinkActive="active">Home</a>
+          </li>
+          <li *ngIf="!usuarioLogin" class="nav-item">
+            <a class="nav-link" aria-current="page" [routerLink]="['/login']" routerLinkActive="active" > Login </a>
+          </li>
+
+          <li *ngIf="usuarioLogin" class="nav-item">
+            <a class="cursor nav-link" aria-current="page" (click)="cerrarSesion()" > Cerrar Sesión <i class="far fa-times-circle"></i></a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
