@@ -1,27 +1,49 @@
-# FrontEndInge2
+# Sistema de Gestión de Software - Front-End
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.3.
+_Es un proyecto para la materia de ingeniería del software II de la FP-UNA, se trata del front-end de un Sistema de Gestión de Software._
 
-## Development server
+_Puede ver el proyecto funcionando hasta el último sprint dando click a **[ver proyecto](https://back-end-inge2.herokuapp.com/#/login)**_
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Comenzando 🚀
 
-## Code scaffolding
+_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Mira **Deployment** para conocer como desplegar el proyecto.
 
-## Build
+### Pre-requisitos 📋
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+_Que cosas necesitas para instalar el proyecto Angular_
 
-## Running unit tests
+```
+El proyecto fue realizado con NodeJs v14.15.4, Angular CLI 11.1.4, y Angular 11.1.2 por lo tanto se recomienda la mismas versiiones o superior para su correcto funcionamiento.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Para la instalación de los paquetes se utilizó NPM: npm 6.14.10, se recomienda una versión igual o superior.
 
-## Running end-to-end tests
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Instalación 🔧
 
-## Further help
+_Para utilizar el proyecto de Angular necesitas clonar el repositorio luego ejecutar el comando:_
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```
+npm install
+```
+
+## Construido con 🛠️
+
+_Menciona las herramientas que utilizaste para crear tu proyecto_
+
+- [Angular](https://angular.io/) - El framework front-end usado.
+- [Bootstrap](https://getbootstrap.com/) - El framework CSS usado.
+
+## Versionado 📌
+
+Usamos [GitHub](https://github.com/mpv-25/front-end-inge2) para el versionado. Para todas las versiones disponibles, mira los [releases en este repositorio](https://github.com/mpv-25/front-end-inge2/releases).
+
+## Autores ✒️
+
+_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
+
+- **[Juan Bareiro](https://github.com/jubacardo)** - _Desarrollo_
+- **[Junior Legal](https://github.com/JLegal93)** - _Desarrollo_
+- **[Matias Pinto](https://github.com/Matias25pinto)** - _Desarrollo_

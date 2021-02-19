@@ -11,6 +11,7 @@ import { SharedModule } from './shared/shared.module';
 import { StoreModule } from "@ngrx/store";
 import { miReducer } from "./app.reducer";
 
+
 @NgModule({
   declarations: [
     AppComponent
@@ -23,8 +24,7 @@ import { miReducer } from "./app.reducer";
     SharedModule,
     StoreModule.forRoot({
       login: miReducer
-    })
-
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
