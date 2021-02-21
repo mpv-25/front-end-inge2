@@ -12,6 +12,7 @@ import {AdministracionModule} from './administracion/administracion.module';
 import { StoreModule } from "@ngrx/store";
 import { miReducer } from "./app.reducer";
 
+
 @NgModule({
   declarations: [
     AppComponent
