@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./crear-roles.component.css']
 })
 export class CrearRolesComponent implements OnInit {
+  public Title = "Crear Roles"
   public RolSistemaChecked = false;
 
   constructor() { }

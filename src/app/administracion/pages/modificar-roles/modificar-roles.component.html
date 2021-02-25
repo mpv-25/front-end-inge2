@@ -1,0 +1,71 @@
+  <div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center p-3">
+                {{Title}}
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6 mx-auto mt-5">
+            <table class="table table-dark table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Developer</td>
+                    <td>sistema</td>
+                    <td>
+                        <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Owner</td>
+                    <td>sistema</td>
+                    <td>
+                        <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+                        <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>QA</td>
+                    <td>proyecto</td>
+                    <td>
+                        <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+                        <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Editar Rol</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <app-crear-roles></app-crear-roles>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
