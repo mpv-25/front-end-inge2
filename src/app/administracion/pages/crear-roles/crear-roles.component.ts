@@ -1,3 +1,4 @@
+import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./crear-roles.component.css']
 })
 export class CrearRolesComponent implements OnInit {
+  public RolSistemaChecked = false;
 
   constructor() { }
 
   ngOnInit(): void {
   }
+
+  onTipoRolChange(event:any){
+     this.RolSistemaChecked = event.target.value.includes('sistema');
+   }
 
 }
