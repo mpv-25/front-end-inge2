@@ -1,0 +1,42 @@
+  <div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center p-3">
+                {{Title}}
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6 mx-auto mt-5">
+            <form autocomplete="off">
+                <div class="mb-3">
+                    <label for="input-nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="input-nombre" aria-describedby="emailHelp" autocomplete="none">
+                </div>
+                <div class="mb-3">
+                    <label for="input-apellido" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="input-apellido" aria-describedby="emailHelp" autocomplete="none">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="none">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="new-password">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleDataList" class="form-label">Rol de usuario</label>
+                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escriba para buscar..." autocomplete="none">
+                    <datalist id="datalistOptions">
+                        <option value="Developer">
+                        <option value="Owner">
+                        <option value="QA">
+                        <option value="Manager">
+                        <option value="Another Rol">
+                    </datalist>
+                </div>
+                 <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </div>
