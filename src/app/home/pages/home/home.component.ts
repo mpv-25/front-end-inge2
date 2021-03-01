@@ -20,15 +20,11 @@ export class HomeComponent implements OnInit {
   goToCrearRoles(){
     this.router.navigate(['administracion/crear-roles']);
   }
-  goToModificarRoles(){
-    this.router.navigate(['administracion/modificar-roles']);
-  }
+
   goToCrearUsuarios(){
     this.router.navigate(['administracion/crear-usuarios']);
   }
-  goToModificarUsuarios(){
-    this.router.navigate(['administracion/modificar-usuarios']);
-  }
+
   goToRolesUsuarios(){
     this.router.navigate(['administracion/roles-usuarios']);
   }

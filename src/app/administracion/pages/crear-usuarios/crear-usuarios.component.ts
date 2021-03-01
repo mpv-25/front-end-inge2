@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./crear-usuarios.component.css']
 })
 export class CrearUsuariosComponent implements OnInit {
-  public Title = "Crear Usuarios";
+  public Title = "Usuarios";
   constructor() { }
 
   ngOnInit(): void {
