@@ -1,0 +1,108 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+        <h3 class="text-center p-3">
+            {{Title}}
+        </h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6 mx-auto mt-5">
+        <table class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">
+                  <div class="d-flex flex-row-reverse">
+                    <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Developer</td>
+                <td>
+                  <div class="d-flex flex-row-reverse">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger "><i class="far fa-trash-alt"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Owner</td>
+                <td>
+                  <div class="d-flex flex-row-reverse">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger "><i class="far fa-trash-alt"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>QA</td>
+                <td>
+                  <div class="d-flex flex-row-reverse">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger "><i class="far fa-trash-alt"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Rol</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 col-md-6 mx-auto mt-5">
+              <form id="form-crear-rol">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Administracion
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                  <label class="form-check-label" for="flexCheckChecked">
+                    Configuracion
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
+                  <label class="form-check-label" for="flexCheckChecked2">
+                    Proyecto
+                  </label>
+                </div>
+                <div class="input-group my-3">
+                    <input type="text" class="form-control" placeholder="Nombre del Rol" aria-label="Text input with dropdown button">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary mr-3">guardar</button>
+                    <button type="button" class="btn btn-outline-dark">cancelar</button>
+                </div>
+              </form>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
