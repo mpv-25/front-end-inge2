@@ -48,9 +48,9 @@ export class LoginComponent implements OnInit {
           title: 'Inicio sesión con éxito!!!',
           showConfirmButton: false,
           timer: 1500
-        })
+        });
+      //Si la respuesta de la api es ok = true, cambiamos el estado del login en ngrx a true
       if (resp.ok) {
-        localStorage.setItem('token', resp.token);
         this.store.dispatch({ type: 'iniciarLogin' });
         this.router.navigate(['home']);
       }
@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit {
     this.formularioLogin.reset({
       email: '',
       password:''
-    })
+    });
   }
    // Funcion para subir al inicio
   subirInicio(): void{
