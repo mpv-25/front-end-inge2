@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CrearRolesComponent } from './administracion/pages/crear-roles/crear-roles.component';
-import { CrearUsuariosComponent } from './administracion/pages/crear-usuarios/crear-usuarios.component';
-import { RolesUsuariosComponent } from './administracion/pages/roles-usuarios/roles-usuarios.component';
 //Componentes
 import { LoginComponent } from './auth/pages/login/login.component';
 import { HomeComponent } from './home/pages/home/home.component';
+import { CrearRolesComponent } from './administracion/pages/crear-roles/crear-roles.component';
+import { CrearUsuariosComponent } from './administracion/pages/crear-usuarios/crear-usuarios.component';
+import { RolesUsuariosComponent } from './administracion/pages/roles-usuarios/roles-usuarios.component';
+
 //Guards
 import { AuthGuard } from './shared/guards/auth.guard';
 

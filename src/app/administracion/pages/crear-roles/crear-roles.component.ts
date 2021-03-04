@@ -45,7 +45,6 @@ export class CrearRolesComponent implements OnInit {
   cargarFormulario(id: string) {
     this.limpiarFormulario();
     this.roleService.getRole(id).subscribe((data) => {
-      console.log(data.role);
       this.nuevoRole = false;
       this.idRole = id;
       let nombre = data.role.nombre;
@@ -97,7 +96,6 @@ export class CrearRolesComponent implements OnInit {
         //Enviar body a la api
         this.roleService.crearRole(body).subscribe(
           (resp) => {
-            console.log(resp);
             this.cargarListaRoles();
             this.limpiarFormulario();
           },

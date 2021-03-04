@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GetRole, GetRoles, NewRole } from '../models/role';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class RoleService {
   constructor(private http: HttpClient) {}
 
-  getRoles() {
+  getRoles(): Observable<GetRoles> {
     return this.http.get<GetRoles>('http://localhost:3000/roles');
   }
   getRole(id: string) {
