@@ -15,7 +15,7 @@ import { RoleService } from 'src/app/administracion/services/role.service';
 })
 export class LoginComponent implements OnInit {
   public formularioLogin: FormGroup;
-
+  public loading: Boolean = false;
   public listaRoles: Array<RoleBD> = [];
   constructor(
     private router: Router,
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
     this.listaRoles.map((data) => {
       if (data._id == id) {
         permisos = data.permisos.toString();
-	console.log(permisos);
+        console.log(permisos);
         localStorage.setItem('permisos', permisos);
       }
     });
@@ -79,13 +79,14 @@ export class LoginComponent implements OnInit {
 
   iniciarSesion() {
     if (this.formularioLogin.valid) {
+      this.loading = true;
       let email = this.formularioLogin.get('email')?.value;
       let password = this.formularioLogin.get('password')?.value;
       this.login.login(email, password).subscribe(
         (resp) => {
           this.borrarFormulario();
-	  //Guardamos los permisos en el local storage
-	  this.permisos(resp.usuario.role);
+          //Guardamos los permisos en el local storage
+          this.permisos(resp.usuario.role);
           Swal.fire({
             position: 'top-end',
             icon: 'success',
