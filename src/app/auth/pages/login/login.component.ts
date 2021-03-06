@@ -109,6 +109,7 @@ export class LoginComponent implements OnInit {
             text: 'No se pudo iniciar sesión!',
             footer: 'Sus credenciales no son válidas ',
           });
+          this.loading = false;
         }
       );
     } else {
