@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoleBD, NewRole } from '../../models/role';
 import { RoleService } from '../../services/role.service';
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-roles',
@@ -98,8 +100,22 @@ export class CrearRolesComponent implements OnInit {
           (resp) => {
             this.cargarListaRoles();
             this.limpiarFormulario();
+
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'El rol fue creado con éxito',
+              showConfirmButton: false,
+              timer: 1500,
+            });
           },
           (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Ocurrió un error',
+              footer: 'No es posible crear el rol.',
+            });
             console.warn(err);
           }
         );
@@ -108,8 +124,22 @@ export class CrearRolesComponent implements OnInit {
         this.roleService.modificarRole(this.idRole, body).subscribe(
           (data) => {
             console.log(data);
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'El rol fue modificado con éxito',
+              showConfirmButton: false,
+              timer: 1500,
+            });
           },
           (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Ocurrió un error',
+              footer: 'No es posible modificar el rol.',
+            });
+
             console.warn(err);
           }
         );
@@ -120,9 +150,23 @@ export class CrearRolesComponent implements OnInit {
     this.roleService.eliminarRole(id).subscribe(
       (data) => {
         console.log(data);
-	this.cargarListaRoles();
+        this.cargarListaRoles();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'El rol fue eliminado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
       },
       (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Ocurrió un error',
+          footer: 'No es posible eliminar el rol.',
+        });
+
         console.warn(err);
       }
     );

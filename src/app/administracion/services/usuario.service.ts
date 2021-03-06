@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { GetUsuarios, NewUsuario } from '../models/usuario';
+import {
+  ActualizarRole,
+  GetUsuarios,
+  NewUsuario,
+  RespUpdateUsuario,
+  UpdateUsuario,
+} from '../models/usuario';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -17,5 +23,11 @@ export class UsuarioService {
   }
   deleteUsuario(id: string) {
     return this.http.delete(`${this.url}/usuario/${id}`);
+  }
+  actualizarUsuario(id: string, body: UpdateUsuario) {
+    return this.http.put<RespUpdateUsuario>(`${this.url}/usuario/${id}`, body);
+  }
+  asignarRole(id: string, body: ActualizarRole) {
+    return this.http.put(`${this.url}/usuario/role/${id}`, body);
   }
 }

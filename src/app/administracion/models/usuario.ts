@@ -9,7 +9,7 @@ export interface UsuarioBD {
   apellido: string;
   email: string;
   role: string;
-  img:string
+  img: string;
 }
 export interface NewUsuario {
   nombre: string;
@@ -17,5 +17,20 @@ export interface NewUsuario {
   email: string;
   password: string;
   role: string;
-  img:string
+  img: string;
+}
+export interface UpdateUsuario {
+  nombre: string;
+  apellido: string;
+  email: string;
+  role: string;
+  img: string;
+}
+export interface RespUpdateUsuario {
+  ok: Boolean;
+  message: string;
+  usuario: UsuarioBD;
+}
+export interface ActualizarRole {
+  role: string;
 }

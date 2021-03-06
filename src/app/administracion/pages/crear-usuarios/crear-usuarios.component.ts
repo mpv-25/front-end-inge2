@@ -4,6 +4,8 @@ import { RoleBD } from '../../models/role';
 import { UsuarioBD } from '../../models/usuario';
 import { RoleService } from '../../services/role.service';
 import { UsuarioService } from '../../services/usuario.service';
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-usuarios',
@@ -16,6 +18,7 @@ export class CrearUsuariosComponent implements OnInit {
   public listaRoles: Array<RoleBD> = [];
   public listaUsuarios: Array<UsuarioBD> = [];
   public nuevoUsuario: Boolean = true;
+  private idUsuario: string = '';
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -47,18 +50,6 @@ export class CrearUsuariosComponent implements OnInit {
     this.role.getRoles().subscribe(
       (data) => {
         this.listaRoles = data.roles;
-        console.log(this.listaRoles);
-      },
-      (err) => {
-        console.warn(err);
-      }
-    );
-  }
-  eliminarUsuario(id: string) {
-    this.usuarioService.deleteUsuario(id).subscribe(
-      (resp) => {
-        console.log(resp);
-        this.cargarUsuarios();
       },
       (err) => {
         console.warn(err);
@@ -77,6 +68,7 @@ export class CrearUsuariosComponent implements OnInit {
 
   limpiarFormulario() {
     this.nuevoUsuario = true;
+    this.idUsuario = '';
     this.userForm.reset({
       nombre: [''],
       apellido: [''],
@@ -87,6 +79,7 @@ export class CrearUsuariosComponent implements OnInit {
   }
   cargarUsuario(id: string) {
     this.nuevoUsuario = false;
+    this.idUsuario = id;
     let usuario = this.listaUsuarios.find((user) => user._id == id);
     this.userForm.reset({
       nombre: usuario?.nombre,
@@ -113,22 +106,92 @@ export class CrearUsuariosComponent implements OnInit {
           role,
           img,
         };
-
         this.usuarioService.crearUsuario(body).subscribe(
           (resp) => {
             console.log(resp);
             this.limpiarFormulario();
             this.cargarUsuarios();
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'El usuario fue creado con éxito',
+              showConfirmButton: false,
+              timer: 1500,
+            });
           },
           (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Ocurrió un error',
+              footer: 'No es posible crear el usuario.',
+            });
             console.warn(err);
           }
         );
       } else {
-        console.log('usuario editado');
+        let body = {
+          nombre,
+          apellido,
+          email,
+          role,
+          img,
+        };
+        this.usuarioService.actualizarUsuario(this.idUsuario, body).subscribe(
+          (resp) => {
+            if (resp.ok) {
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'El usuario fue modificado con éxito',
+                showConfirmButton: false,
+                timer: 1500,
+              });
+
+              this.cargarUsuarios();
+            } else {
+              console.log('No se actualizo el usuario');
+            }
+          },
+          (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Ocurrió un error',
+              footer: 'No es posible modificar el usuario.',
+            });
+
+            console.warn(err);
+          }
+        );
       }
     } else {
       console.log('formulario no válido');
     }
+  }
+  eliminarUsuario(id: string) {
+    this.usuarioService.deleteUsuario(id).subscribe(
+      (resp) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'El usuario fue eliminado con éxito',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        this.cargarUsuarios();
+      },
+      (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Ocurrió un error',
+          footer: 'No es posible eliminar el usuario.',
+        });
+
+        console.warn(err);
+      }
+    );
   }
 }
