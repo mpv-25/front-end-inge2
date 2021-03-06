@@ -13,7 +13,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UsuarioService {
-  private url: string = 'http://localhost:3000';
+  //private url: string = 'http://localhost:3000';
+  private url = 'https://back-end-inge2.herokuapp.com';
   constructor(private http: HttpClient) {}
   crearUsuario(body: NewUsuario) {
     return this.http.post(`${this.url}/usuario`, body);

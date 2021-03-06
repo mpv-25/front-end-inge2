@@ -6,21 +6,22 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class RoleService {
+  private url = 'https://back-end-inge2.herokuapp.com';
   constructor(private http: HttpClient) {}
 
   getRoles(): Observable<GetRoles> {
-    return this.http.get<GetRoles>('http://localhost:3000/roles');
+    return this.http.get<GetRoles>(`${this.url}/roles`);
   }
   getRole(id: string) {
-    return this.http.get<GetRole>('http://localhost:3000/role/' + id);
+    return this.http.get<GetRole>(`${this.url}/role/${id}`);
   }
   crearRole(body: NewRole) {
-    return this.http.post('http://localhost:3000/role', body);
+    return this.http.post(`${this.url}/role`, body);
   }
   modificarRole(id: string, body: NewRole) {
-    return this.http.put('http://localhost:3000/role/' + id, body);
+    return this.http.put(`${this.url}/role/${id}`, body);
   }
   eliminarRole(id: string) {
-    return this.http.delete('http://localhost:3000/role/' + id);
+    return this.http.delete(`${this.url}/role/${id}`);
   }
 }
