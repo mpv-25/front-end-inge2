@@ -1,106 +1,98 @@
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <h3 class="text-center p-3">
-                {{Title}}
-            </h3>
-        </div>
+  <div class="row">
+    <div class="col">
+      <h3 class="text-center p-3">
+        {{ Title }}
+      </h3>
     </div>
-    <div class="row">
-        <div class="col-12 col-md-6 mx-auto mt-5">
-            <table class="table table-dark table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Rol</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Josep</td>
-                    <td>josep@hotmail.net</td>
-                    <td>
-                        <div>
-                            <input value="Developer" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escriba para buscar..." autocomplete="none">
-                            <datalist id="">
-                                <option value="Developer">
-                                <option value="Owner">
-                                <option value="QA">
-                                <option value="Manager">
-                                <option value="Another Rol">
-                            </datalist>
+  </div>
+  <div class="row">
+    <div class="col-12  mx-auto mt-5">
+      <table class="table table-dark table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Email</th>
+            <th scope="col">Rol</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of listaUsuarios; let i = index">
+            <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>
+              <div class="mb-3">
+                <form [formGroup]="formulario">
+                  <select formControlName="role" class="form-select">
+                    <option value="">Selecciar un Rol</option>
+                    <option
+                      *ngFor="let role of listaRoles"
+                      value="{{ role._id }}"
+                    >
+                      {{ role.nombre }}
+                    </option>
+                  </select>
+                  <!-- Modal -->
+                  <div
+                    class="modal fade text-dark text-center"
+                    id="staticBackdrop"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    tabindex="-1"
+                    aria-labelledby="staticBackdropLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="staticBackdropLabel">
+                            Guardar Cambios?
+                          </h5>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
                         </div>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            guardar
-                        </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Julio</td>
-                    <td>julin@gmail.net</td>
-                    <td>
-                        <div>
-                            <input value="Manager" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escriba para buscar..." autocomplete="none">
-                            <datalist id="">
-                                <option value="Developer">
-                                <option value="Owner">
-                                <option value="QA">
-                                <option value="Manager">
-                                <option value="Another Rol">
-                            </datalist>
+                        <div class="modal-body"></div>
+                        <p>Está seguro de asignar este rol al usuario</p>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Cerrar
+                          </button>
+                          <button
+                            (click)="enviarFormulario(usuario._id)"
+                            type="button"
+                            class="btn btn-primary"
+                          >
+                            Ok
+                          </button>
                         </div>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            guardar
-                        </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Analia</td>
-                    <td>ariquelme@noak.net</td>
-                    <td>
-                        <div>
-                            <input value="Manager" class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escriba para buscar..." autocomplete="none">
-                            <datalist id="">
-                                <option value="Developer">
-                                <option value="Owner">
-                                <option value="QA">
-                                <option value="Manager">
-                                <option value="Another Rol">
-                            </datalist>
-                        </div>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            guardar
-                        </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop"
+              >
+                guardar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    </div>      
-      <!-- Modal -->
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="staticBackdropLabel">Guardar Cambios?</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary">Ok</button>
-            </div>
-          </div>
-        </div>
-      </div>
+  </div>
+</div>

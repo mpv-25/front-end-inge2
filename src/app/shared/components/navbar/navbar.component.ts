@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit, DoCheck {
   }
 
   ngOnInit(): void {
+    
   }
 
   ngDoCheck(): void{
