@@ -66,14 +66,19 @@
             data-bs-parent="#accordionFlushExample"
           >
             <div class="accordion-body d-flex flex-column">
-              <button type="button" class="btn btn-outline-dark mt-3 mb-2">
-                Crear Proyecto
+              <button 
+                (click)="goToProyectos()"
+                type="button" 
+                class="btn btn-outline-dark mt-3 mb-2"
+              >
+                Proyectos
               </button>
-              <button type="button" class="btn btn-outline-dark mt-3 mb-2">
-                Crear Tareas
-              </button>
-              <button type="button" class="btn btn-outline-dark mt-3 mb-2">
-                Agregar Tareas
+              <button 
+                (click)="goToTareas()"
+                type="button" 
+                class="btn btn-outline-dark mt-3 mb-2"
+              >
+                Tareas
               </button>
             </div>
           </div>

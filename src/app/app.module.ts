@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import {AdministracionModule} from './administracion/administracion.module';
+import {DesarrolloModule} from './desarrollo/desarrollo.module';
 //Importar ngrx
 import { StoreModule } from "@ngrx/store";
 import { miReducer } from "./app.reducer";
@@ -27,7 +28,8 @@ import { miReducer } from "./app.reducer";
     StoreModule.forRoot({
       login: miReducer
     }),
-    AdministracionModule
+    AdministracionModule,
+    DesarrolloModule
   ],
   providers: [],
   bootstrap: [AppComponent]

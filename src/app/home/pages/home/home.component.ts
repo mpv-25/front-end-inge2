@@ -40,4 +40,10 @@ export class HomeComponent implements OnInit {
   goToRolesUsuarios() {
     this.router.navigate(['administracion/roles-usuarios']);
   }
+  goToProyectos() {
+    this.router.navigate(['desarrollo/proyectos']);
+  }
+  goToTareas() {
+    this.router.navigate(['desarrollo/tareas']);
+  }
 }
