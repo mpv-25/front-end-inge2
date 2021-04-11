@@ -1,0 +1,292 @@
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <h3 class="text-center p-3">
+          {{ Title }}
+        </h3>
+      </div>
+    </div>
+    <div  class="row">
+      <div class="col d-flex justify-content-center">
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-center" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div  class="row">
+      <div class="col-12 col-md-6 mx-auto mt-5">
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">
+                <div class="d-flex flex-row-reverse">
+                  <button
+                    class="btn btn-outline-light"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    data-bs-whatever="@mdo"
+                  >
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="accordion" id="accordionExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                      <button class="accordion-button collapsed text-light py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-controls="collapseOne">
+                        Accordion Item #1
+                      </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                      <div class="text-light">
+                          Tareas
+                      </div>
+                        <table class="table table-dark table-striped">
+                          <thead>
+                            <tr>
+                              <th scope="col">Nombre</th>
+                              <th scope="col">
+                                <div class="d-flex flex-row-reverse">
+                                  <button
+                                    class="btn btn-outline-light"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modal-tarea"
+                                    data-bs-whatever="@mdo"
+                                  >
+                                    <i class="fas fa-plus"></i>
+                                  </button>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                Tarea 1
+                              </td>
+                              <td>
+                                <div class="d-flex flex-row-reverse">
+                                  <button
+                                    type="button"
+                                    class="btn btn-success"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modal-tarea"
+                                    data-bs-whatever="@mdo"
+                                  >
+                                    <i class="fas fa-edit"></i>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger"
+                                  >
+                                    <i class="far fa-trash-alt"></i>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex flex-row-reverse">
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    data-bs-whatever="@mdo"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                  >
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Proyecto</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 col-md-6 mx-auto mt-5">
+              <form
+                id="form-tareas"
+              >
+                <div class="input-group my-3">
+                  <input
+                    formControlName="nombre"
+                    type="text"
+                    class="form-control"
+                    placeholder="Nombre del Proyecto"
+                    aria-label="Text input with dropdown button"
+                  />
+                </div>
+                <div class="form-floating">
+                  <textarea
+                    formControlName="descripcion"
+                    class="form-control mt-3"
+                    placeholder="Leave a comment here"
+                    id="floatingTextarea4"
+                    style="height: 100px"
+                  ></textarea>
+                  <label for="floatingTextarea4">Descripción del Proyecto</label>
+                </div>
+                <div class="form-group my-3 d-flex justify-content-between">
+                  <button type="submit" class="btn btn-primary mr-3">
+                    Guardar
+                  </button>
+                  <button type="button" class="btn btn-outline-dark">
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade"
+    id="modal-tarea"
+    tabindex="-1"
+    aria-labelledby="modal-tarea"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-tarea">Tareas</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 col-md-6 mx-auto mt-5">
+              <form
+                id="form-tareas"
+              >
+                <div class="input-group my-3">
+                  <input
+                    formControlName="nombre"
+                    type="text"
+                    class="form-control"
+                    placeholder="Nombre de la tarea"
+                    aria-label="Text input with dropdown button"
+                  />
+                </div>
+                <div class="form-floating">
+                  <textarea
+                    formControlName="descripcion"
+                    class="form-control mt-3"
+                    placeholder="Leave a comment here"
+                    id="floatingTextarea5"
+                    style="height: 100px"
+                  ></textarea>
+                  <label for="floatingTextarea5">Descripción de la tarea</label>
+                </div>
+                
+                <div class="form-group my-3 d-flex justify-content-between">
+                  <button type="submit" class="btn btn-primary mr-3">
+                    Guardar
+                  </button>
+                  <button type="button" class="btn btn-outline-dark">
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
