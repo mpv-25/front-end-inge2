@@ -8,6 +8,7 @@ import { CrearUsuariosComponent } from './administracion/pages/crear-usuarios/cr
 import { RolesUsuariosComponent } from './administracion/pages/roles-usuarios/roles-usuarios.component';
 import { ProyectosComponent } from './desarrollo/pages/proyectos/proyectos.component';
 import { TareasComponent } from './desarrollo/pages/tareas/tareas.component';
+import { LineabaseComponent } from './configuracion/pages/lineabase/lineabase.component';
 
 //Guards
 import { AuthGuard } from './shared/guards/auth.guard';
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path:'administracion/roles-usuarios', component:RolesUsuariosComponent, canActivate:[AuthGuard]},
   { path:'desarrollo/proyectos', component:ProyectosComponent, canActivate:[AuthGuard]},
   { path:'desarrollo/tareas', component:TareasComponent, canActivate:[AuthGuard]},
+  { path:'configuracion/lineabase', component:LineabaseComponent, canActivate:[AuthGuard]},
   { path:'', pathMatch:'full', redirectTo:'home'},
   { path:'**', pathMatch:'full', redirectTo:'home' }
 ];

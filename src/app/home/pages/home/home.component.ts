@@ -46,4 +46,8 @@ export class HomeComponent implements OnInit {
   goToTareas() {
     this.router.navigate(['desarrollo/tareas']);
   }
+  goToLineaBase() {
+    this.router.navigate(['configuracion/lineabase']);
+  }
+  
 }
