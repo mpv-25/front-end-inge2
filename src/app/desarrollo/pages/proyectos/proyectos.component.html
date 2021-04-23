@@ -56,6 +56,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                   data-bs-whatever="@mdo"
+                  (click)="borrarFormulario()"
                 >
                   <i class="fas fa-plus"></i>
                 </button>
@@ -68,21 +69,21 @@
             <td>
               <div class="accordion" id="accordion">
                 <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingOne">
+                  <h2 class="accordion-header" [id]="'heading' + i">
                     <button
                       class="accordion-button collapsed text-light py-2"
                       type="button"
                       data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
+                      [attr.data-bs-target]="'#collapse' + i"
                       aria-controls="collapseOne"
                     >
                       {{ proyecto.nombre }}
                     </button>
                   </h2>
                   <div
-                    id="collapseOne"
+                    [id]="'collapse' + i"
                     class="accordion-collapse collapse"
-                    aria-labelledby="headingOne"
+                    [attr.aria-labelledby]="'heading' + i"
                     data-bs-parent="#accordion"
                   >
                     <div class="accordion-body">
@@ -98,6 +99,7 @@
                                   data-bs-toggle="modal"
                                   data-bs-target="#modal-tarea"
                                   data-bs-whatever="@mdo"
+                                  (click)="borrarFormularioTarea()"
                                   (click)="seleccionarProyecto(proyecto)"
                                 >
                                   <i class="fas fa-plus"></i>
@@ -117,10 +119,15 @@
                                   data-bs-toggle="modal"
                                   data-bs-target="#modal-tarea"
                                   data-bs-whatever="@mdo"
+                                  (click)="seleccionarTarea(proyecto, tarea)"
                                 >
                                   <i class="fas fa-edit"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger">
+                                <button
+                                  type="button"
+                                  class="btn btn-danger"
+                                  (click)="eliminarTarea(proyecto, tarea._id)"
+                                >
                                   <i class="far fa-trash-alt"></i>
                                 </button>
                               </div>
@@ -141,10 +148,15 @@
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                   data-bs-whatever="@mdo"
+                  (click)="editarProyecto(proyecto)"
                 >
                   <i class="fas fa-edit"></i>
                 </button>
-                <button type="button" class="btn btn-danger">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="eliminarProyecto(proyecto._id||'')"
+                >
                   <i class="far fa-trash-alt"></i>
                 </button>
               </div>
@@ -292,7 +304,7 @@
                   aria-label="Floating label select example"
                 >
                   <option selected value="''">Seleccionar</option>
-                  <option *ngFor="let tarea of tareas" value="tarea._id">
+                  <option *ngFor="let tarea of tareas" [value]="tarea._id">
                     {{ tarea.titulo }}
                   </option>
                 </select>

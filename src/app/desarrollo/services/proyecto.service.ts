@@ -12,10 +12,13 @@ export class ProyectoService {
   getProyectos() {
     return this.http.get<getProyectos>(`${this.url}/proyectos`);
   }
-  setProyecto(_id:string | undefined, body: Proyecto){
-    return this.http.put(`${this.url}/proyecto/${_id}`, body)
+  modificarProyecto(_id: string | undefined, body: Proyecto) {
+    return this.http.put(`${this.url}/proyecto/${_id}`, body);
   }
-  nuevoProyecto(body: Proyecto){
-    return this.http.post(`${this.url}/proyecto`, body)
+  nuevoProyecto(body: Proyecto) {
+    return this.http.post(`${this.url}/proyecto`, body);
+  }
+  borrarProyecto(idProyecto: string) {
+    return this.http.delete(`${this.url}/proyecto/${idProyecto}`);
   }
 }
