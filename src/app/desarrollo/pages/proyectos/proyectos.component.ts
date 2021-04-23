@@ -15,7 +15,6 @@ export class ProyectosComponent implements OnInit {
   public formularioTarea: FormGroup;
   public proyecto: Proyecto = {
     nombre: '',
-    gerente: '',
     descripcion: '',
     tareas: [],
   };
@@ -25,6 +24,9 @@ export class ProyectosComponent implements OnInit {
     descripcion: '',
   };
   public tareas: Array<Tarea> | undefined = [this.tarea];
+  public tareaEditada: string = '';
+  public isEditingProject: boolean = false;
+
   constructor(
     private proyectoService: ProyectoService,
     private fb: FormBuilder
@@ -52,24 +54,46 @@ export class ProyectosComponent implements OnInit {
   enviarFormulario() {
     if (this.form.valid) {
       let nombre = this.form.get('nombre')?.value;
-      let gerente = '60246933a00573178bf6097d';
       let descripcion = this.form.get('descripcion')?.value;
-      let body: Proyecto = {
-        nombre,
-        gerente,
-        descripcion,
-      };
-      this.proyectoService.nuevoProyecto(body).subscribe(
-        (resp) => {
-          console.log('EXITOSO!!! Proyecto creado');
-          this.cargarProyectos();
-          this.borrarFormulario();
-        },
-        (err) => {
-          console.warn('ERROR!!! No se creo el proyecto');
-        }
-      );
-      console.log(this.form);
+      if (!this.isEditingProject) {
+        let body: Proyecto = {
+          nombre,
+          descripcion,
+        };
+        this.proyectoService.nuevoProyecto(body).subscribe(
+          (resp) => {
+            console.log('EXITOSO!!! Proyecto creado');
+            this.cargarProyectos();
+            this.borrarFormulario();
+          },
+          (err) => {
+            console.warn('ERROR!!! No se creo el proyecto');
+          }
+        );
+      } else {
+        let _id = this.proyecto._id;
+        let body = {
+          nombre,
+          descripcion,
+          tareas: this.proyecto.tareas,
+        };
+        this.proyectoService.modificarProyecto(_id, body).subscribe(
+          (resp) => {
+            this.cargarProyectos();
+            this.isEditingProject = false;
+            this.proyecto = {
+              nombre: '',
+              descripcion: '',
+              tareas: [],
+            };
+            console.log('EXITOSO!!! Proyecto Modificado');
+          },
+          (err) => {
+            console.warn('ERROR!!! No se agrego la tarea');
+            console.warn(err);
+          }
+        );
+      }
     } else {
       console.warn('ERROR!!! formulario no valido');
     }
@@ -90,32 +114,52 @@ export class ProyectosComponent implements OnInit {
       let estado = this.formularioTarea.get('estado')?.value;
       let descripcion = this.formularioTarea.get('descripcion')?.value;
       let idTareaPadre = this.formularioTarea.get('idTareaPadre')?.value;
-      let tarea: Tarea = {
-        titulo,
-        estado,
-        descripcion,
-        id_tarea_padre: idTareaPadre,
-      };
       if (proyecto.tareas == null) {
         proyecto.tareas = [];
       }
-      let tareas = proyecto.tareas;
-      tareas?.push(tarea);
-      proyecto.tareas = tareas;
-
-      this.proyectoService.setProyecto(proyecto._id, proyecto).subscribe(
+      let nuevaTareas: Array<Tarea>;
+      if (!this.isEditingProject) {
+        let tarea: Tarea = {
+          titulo,
+          estado,
+          descripcion,
+          id_tarea_padre: idTareaPadre,
+        };
+        nuevaTareas = proyecto.tareas;
+        nuevaTareas.push(tarea);
+      } else {
+        nuevaTareas = proyecto.tareas.map((tarea) => {
+          if (tarea._id == this.tareaEditada) {
+            return {
+              _id: tarea._id,
+              titulo,
+              estado,
+              descripcion,
+              id_tarea_padre: idTareaPadre,
+            };
+          }
+          return tarea;
+        });
+        console.log(nuevaTareas);
+      }
+      let _id = proyecto._id;
+      let body = {
+        nombre: proyecto.nombre,
+        descripcion: proyecto.descripcion,
+        tareas: nuevaTareas,
+      };
+      console.log('ESTE ES EL ID ENVIADO', _id);
+      this.proyectoService.modificarProyecto(_id, body).subscribe(
         (resp) => {
-          console.log('EXITOSO!!! Se agrego la tarea');
-          console.log(resp);
           this.cargarProyectos();
           this.borrarFormularioTarea();
+          console.log('EXITOSO!!! Proyecto Modificado');
         },
         (err) => {
           console.warn('ERROR!!! No se agrego la tarea');
           console.warn(err);
         }
       );
-      console.log(this.form);
     } else {
       console.warn('ERROR!!! formulario no valido');
     }
@@ -127,5 +171,71 @@ export class ProyectosComponent implements OnInit {
       descripcion: '',
       idTareaPadre: '',
     });
+    this.isEditingProject = false;
+    this.proyecto = {
+      nombre: '',
+      descripcion: '',
+      tareas: [],
+    };
+    this.tarea = {
+      titulo: '',
+      estado: '',
+      descripcion: '',
+    };
+  }
+  editarProyecto(proyecto: Proyecto) {
+    console.log(proyecto);
+    this.isEditingProject = true;
+    this.proyecto = proyecto;
+    this.form.reset({
+      nombre: proyecto.nombre,
+      descripcion: proyecto.descripcion,
+    });
+  }
+  seleccionarTarea(proyecto: Proyecto, tarea: Tarea) {
+    this.proyecto = proyecto;
+    this.formularioTarea.reset({
+      estado: tarea.estado,
+      titulo: tarea.titulo,
+      descripcion: tarea.descripcion,
+      idTareaPadre: tarea.id_tarea_padre,
+    });
+    this.tareas = proyecto.tareas;
+    this.isEditingProject = true;
+    this.tareaEditada = tarea._id || '';
+  }
+  eliminarTarea(proyecto: Proyecto, idTarea: string | undefined) {
+    let nuevaTareas: Array<Tarea> | undefined;
+    nuevaTareas = proyecto.tareas?.filter((tarea) => {
+      if (tarea._id != idTarea) {
+        return tarea;
+      }
+      return;
+    });
+    let body = {
+      nombre: proyecto.nombre,
+      descripcion: proyecto.descripcion,
+      tareas: nuevaTareas,
+    };
+    this.proyectoService.modificarProyecto(proyecto._id, body).subscribe(
+      (resp) => {
+        console.log('EXITO!!! La tarea fue eliminada');
+        this.cargarProyectos();
+      },
+      (err) => {
+        console.warn('ERROR!!! La tarea no fue eliminada');
+      }
+    );
+  }
+  eliminarProyecto(idProyecto: string) {
+    this.proyectoService.borrarProyecto(idProyecto).subscribe(
+      (resp) => {
+        console.log(resp);
+        this.cargarProyectos();
+      },
+      (err) => {
+        console.warn(err);
+      }
+    );
   }
 }

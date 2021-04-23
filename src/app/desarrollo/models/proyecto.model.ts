@@ -9,7 +9,6 @@ export interface Tarea {
 export interface Proyecto {
   _id?: string;
   nombre: string;
-  gerente: string;
   descripcion: string;
   tareas?: Array<Tarea>;
 }
