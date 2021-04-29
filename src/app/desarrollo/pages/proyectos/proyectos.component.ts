@@ -21,6 +21,7 @@ export class ProyectosComponent implements OnInit {
   public tarea: Tarea = {
     titulo: '',
     estado: '',
+    lineaBase: 0,
     version: 0,
     descripcion: '',
   };
@@ -122,6 +123,7 @@ export class ProyectosComponent implements OnInit {
       let descripcion = this.formularioTarea.get('descripcion')?.value;
       let idTareaPadre = this.formularioTarea.get('idTareaPadre')?.value;
       let version = this.formularioTarea.get('version')?.value;
+      let lineaBase = 0;
       //actualizar la versión de la tarea
       ++version;
       if (proyecto.tareas == null) {
@@ -135,6 +137,7 @@ export class ProyectosComponent implements OnInit {
         let tarea: Tarea = {
           titulo,
           estado,
+          lineaBase,
           version,
           descripcion,
           id_tarea_padre: idTareaPadre,
@@ -148,6 +151,7 @@ export class ProyectosComponent implements OnInit {
               _id: tarea._id,
               titulo,
               estado,
+              lineaBase:tarea.lineaBase,
               version,
               descripcion,
               id_tarea_padre: idTareaPadre,
@@ -195,6 +199,7 @@ export class ProyectosComponent implements OnInit {
     this.tarea = {
       titulo: '',
       estado: '',
+      lineaBase:0,
       version: 0,
       descripcion: '',
     };

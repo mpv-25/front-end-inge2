@@ -2,6 +2,7 @@ export interface Tarea {
   _id?: string;
   titulo: string;
   estado: string;
+  lineaBase: number;
   version: number;
   descripcion: string;
   id_tarea_padre?: string;

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Proyecto, Tarea } from 'src/app/desarrollo/models/proyecto.model';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  LineaBase,
+  Proyecto,
+  Tarea,
+} from 'src/app/desarrollo/models/proyecto.model';
 import { ProyectoService } from 'src/app/desarrollo/services/proyecto.service';
 
 @Component({
@@ -9,10 +13,21 @@ import { ProyectoService } from 'src/app/desarrollo/services/proyecto.service';
   styleUrls: ['./lineabase.component.css'],
 })
 export class LineabaseComponent implements OnInit {
+  public Title = 'Linea Base';
   public proyectos: Array<Proyecto> = [];
   public tareasTerminadas: Array<Tarea> = [];
+  public tareasLineaBase: Array<Tarea> = [];
   public formularioLineaBase: FormGroup;
   public formularioTareas: FormGroup;
+
+  private isEditProject: boolean = false;
+
+  public lineaBase: LineaBase = {
+    lineaBase: 0,
+    descripcion: '',
+    abierto: true,
+    tareas: [],
+  };
 
   private proyecto: Proyecto = {
     nombre: '',
@@ -23,6 +38,7 @@ export class LineabaseComponent implements OnInit {
   private tarea: Tarea = {
     titulo: '',
     estado: '',
+    lineaBase: 0,
     version: 0,
     descripcion: '',
   };
@@ -30,22 +46,25 @@ export class LineabaseComponent implements OnInit {
     private proyectoService: ProyectoService,
     private fb: FormBuilder
   ) {
-    this.proyectoService.getProyectos().subscribe((data) => {
-      this.proyectos = data.proyectos;
-      console.log(data);
-    });
-    this.formularioLineaBase = fb.group({
+    this.formularioLineaBase = this.fb.group({
       descripcion: ['', Validators.required],
       abierto: [true, Validators.required],
     });
+
     this.formularioTareas = this.fb.group({
-      _id: [''],
-      agregarLineaBase: false,
+      tareasEnLineaBase: this.fb.array([]),
+    });
+    this.cargarProyectos();
+  }
+  ngOnInit(): void {}
+  get tareasEnLineaBase() {
+    return this.formularioTareas.get('tareasEnLineaBase') as FormArray;
+  }
+  cargarProyectos() {
+    this.proyectoService.getProyectos().subscribe((data) => {
+      this.proyectos = data.proyectos;
     });
   }
-  Title = 'Linea Base';
-  ngOnInit(): void {}
-
   seleccionarProyecto(proyecto: Proyecto) {
     this.proyecto = proyecto;
     this.tareasTerminadas =
@@ -55,21 +74,55 @@ export class LineabaseComponent implements OnInit {
         }
         return null;
       }) || [];
-
-    console.log(this.tareasTerminadas);
+  }
+  seleccionarLineaBase(proyecto: Proyecto, lineaBase: LineaBase) {
+    this.seleccionarProyecto(proyecto);
+    this.lineaBase = lineaBase;
+    this.tareasLineaBase = this.tareasTerminadas.filter((tarea) => {
+      if (tarea.lineaBase === 0) {
+        this.tareasEnLineaBase.push(
+          this.fb.control(false, Validators.required)
+        );
+        return tarea;
+      }
+      return null;
+    });
   }
   borrarProyecto() {
+    this.lineaBase = {
+      lineaBase: 0,
+      descripcion: '',
+      abierto: true,
+      tareas: [],
+    };
+
     this.proyecto = {
       nombre: '',
       descripcion: '',
       tareas: [],
       lineasBase: [],
     };
+    this.tarea = {
+      titulo: '',
+      estado: '',
+      lineaBase: 0,
+      version: 0,
+      descripcion: '',
+    };
+    this.tareasTerminadas = [];
+    this.tareasLineaBase = [];
+    this.isEditProject = false;
+  }
+  modificarLineaBase(proyecto: Proyecto, lineaBase: LineaBase) {
+    this.isEditProject = true;
+    this.seleccionarLineaBase(proyecto, lineaBase);
+    this.formularioLineaBase.reset({
+      descripcion: this.lineaBase.descripcion,
+      abierto: this.lineaBase.abierto,
+    });
   }
   enviarFormularioLineaBase() {
     if (this.formularioLineaBase.valid) {
-      console.log(this.formularioLineaBase.value);
-      console.log(this.proyecto);
       //Agregar linea base
       if (this.proyecto.lineasBase == null) {
         this.proyecto.lineasBase = [];
@@ -84,7 +137,18 @@ export class LineabaseComponent implements OnInit {
         abierto,
         tareas,
       };
-      this.proyecto.lineasBase.push(nuevaLineaBase);
+      if (this.isEditProject) {
+        let lineasBase = this.proyecto.lineasBase.map((lb) => {
+          if (lb.lineaBase == this.lineaBase.lineaBase) {
+            lb.abierto = abierto;
+            lb.descripcion = descripcion;
+          }
+          return lb;
+        });
+        this.proyecto.lineasBase = lineasBase;
+      } else {
+        this.proyecto.lineasBase.push(nuevaLineaBase);
+      }
       let _id = this.proyecto._id;
       let body = {
         nombre: this.proyecto.nombre,
@@ -95,6 +159,7 @@ export class LineabaseComponent implements OnInit {
       this.proyectoService.modificarProyecto(_id, body).subscribe(
         (resp) => {
           console.log('SE AGREGO LA LINEA BASE');
+          this.cerrarModal('cerrar-modal-lineaBase');
           this.borrarProyecto();
         },
         (err) => {
@@ -106,5 +171,57 @@ export class LineabaseComponent implements OnInit {
       console.warn('ERROR!!! Ocurrio un error');
     }
   }
-  enviarFormularioTareas() {}
+  cerrarModal(idButton: string) {
+    let button = document.getElementById(idButton);
+    button?.click();
+    console.log('SE CERRO EL MODAL');
+  }
+  enviarFormularioTareas() {
+    if (this.formularioTareas.valid) {
+      let _id = this.proyecto._id;
+      let lineaBase = this.lineaBase;
+      let nuevasTareas: Array<Tarea> = [];
+      let tareas: Array<Tarea> = [];
+
+      //Actualizar la propiedad de lineaBase de tareas de proyecto
+      let contador = 0;
+      tareas =
+        this.proyecto.tareas?.map((tarea) => {
+          if (this.tareasLineaBase.includes(tarea)) {
+            if (this.tareasEnLineaBase.controls[contador].value) {
+              tarea.lineaBase = lineaBase.lineaBase;
+              nuevasTareas.push(tarea);
+            }
+            ++contador;
+          }
+          return tarea;
+        }) || [];
+
+      //Actualizar la propiedad lineasBase del proyecto.
+      let lineasBase = this.proyecto.lineasBase?.map((lb) => {
+        if (lb.lineaBase === lineaBase.lineaBase) {
+          lb.tareas = [...lb.tareas, ...nuevasTareas];
+        }
+        return lb;
+      });
+
+      //Crear el body
+      let body = {
+        nombre: this.proyecto.nombre,
+        descripcion: this.proyecto.descripcion,
+        tareas,
+        lineasBase,
+      };
+      //Guardar el proyecto
+      this.proyectoService.modificarProyecto(_id, body).subscribe(
+        (resp) => {
+          console.log('EXITO!!! El proyeccto se guardo con exito', resp);
+          this.cerrarModal('cerrar-modal-tarea');
+        },
+        (err) => {
+          console.warn('ERROR!!! El proyecto no se guardo', err);
+        }
+      );
+    }
+  }
 }
