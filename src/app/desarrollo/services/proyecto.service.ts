@@ -5,7 +5,8 @@ import { getProyectos, Proyecto } from '../models/proyecto.model';
   providedIn: 'root',
 })
 export class ProyectoService {
-  private url = 'http://localhost:3000';
+  //private url = 'http://localhost:3000';
+  private url = 'https://back-end-inge2.herokuapp.com';
 
   constructor(private http: HttpClient) {}
 

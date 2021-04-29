@@ -21,6 +21,8 @@ export class ProyectosComponent implements OnInit {
   public tarea: Tarea = {
     titulo: '',
     estado: '',
+    lineaBase: 0,
+    version: 0,
     descripcion: '',
   };
   public tareas: Array<Tarea> | undefined = [this.tarea];
@@ -37,6 +39,7 @@ export class ProyectosComponent implements OnInit {
     });
     this.formularioTarea = this.fb.group({
       estado: ['', Validators.required],
+      version: [0, Validators.required],
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
       idTareaPadre: [''],
@@ -59,6 +62,8 @@ export class ProyectosComponent implements OnInit {
         let body: Proyecto = {
           nombre,
           descripcion,
+          tareas: [],
+          lineasBase: [],
         };
         this.proyectoService.nuevoProyecto(body).subscribe(
           (resp) => {
@@ -72,10 +77,13 @@ export class ProyectosComponent implements OnInit {
         );
       } else {
         let _id = this.proyecto._id;
+        let tareas = this.proyecto.tareas || [];
+        let lineasBase = this.proyecto.lineasBase || [];
         let body = {
           nombre,
           descripcion,
-          tareas: this.proyecto.tareas,
+          tareas,
+          lineasBase,
         };
         this.proyectoService.modificarProyecto(_id, body).subscribe(
           (resp) => {
@@ -114,14 +122,23 @@ export class ProyectosComponent implements OnInit {
       let estado = this.formularioTarea.get('estado')?.value;
       let descripcion = this.formularioTarea.get('descripcion')?.value;
       let idTareaPadre = this.formularioTarea.get('idTareaPadre')?.value;
+      let version = this.formularioTarea.get('version')?.value;
+      let lineaBase = 0;
+      //actualizar la versión de la tarea
+      ++version;
       if (proyecto.tareas == null) {
         proyecto.tareas = [];
+      }
+      if (proyecto.lineasBase == null) {
+        proyecto.lineasBase = [];
       }
       let nuevaTareas: Array<Tarea>;
       if (!this.isEditingProject) {
         let tarea: Tarea = {
           titulo,
           estado,
+          lineaBase,
+          version,
           descripcion,
           id_tarea_padre: idTareaPadre,
         };
@@ -134,21 +151,22 @@ export class ProyectosComponent implements OnInit {
               _id: tarea._id,
               titulo,
               estado,
+              lineaBase:tarea.lineaBase,
+              version,
               descripcion,
               id_tarea_padre: idTareaPadre,
             };
           }
           return tarea;
         });
-        console.log(nuevaTareas);
       }
       let _id = proyecto._id;
       let body = {
         nombre: proyecto.nombre,
         descripcion: proyecto.descripcion,
         tareas: nuevaTareas,
+        lineasBase: proyecto.lineasBase,
       };
-      console.log('ESTE ES EL ID ENVIADO', _id);
       this.proyectoService.modificarProyecto(_id, body).subscribe(
         (resp) => {
           this.cargarProyectos();
@@ -167,6 +185,7 @@ export class ProyectosComponent implements OnInit {
   borrarFormularioTarea() {
     this.formularioTarea.reset({
       estado: '',
+      version: 0,
       titulo: '',
       descripcion: '',
       idTareaPadre: '',
@@ -180,11 +199,12 @@ export class ProyectosComponent implements OnInit {
     this.tarea = {
       titulo: '',
       estado: '',
+      lineaBase:0,
+      version: 0,
       descripcion: '',
     };
   }
   editarProyecto(proyecto: Proyecto) {
-    console.log(proyecto);
     this.isEditingProject = true;
     this.proyecto = proyecto;
     this.form.reset({
@@ -196,6 +216,7 @@ export class ProyectosComponent implements OnInit {
     this.proyecto = proyecto;
     this.formularioTarea.reset({
       estado: tarea.estado,
+      version: tarea.version,
       titulo: tarea.titulo,
       descripcion: tarea.descripcion,
       idTareaPadre: tarea.id_tarea_padre,
@@ -230,7 +251,6 @@ export class ProyectosComponent implements OnInit {
   eliminarProyecto(idProyecto: string) {
     this.proyectoService.borrarProyecto(idProyecto).subscribe(
       (resp) => {
-        console.log(resp);
         this.cargarProyectos();
       },
       (err) => {
