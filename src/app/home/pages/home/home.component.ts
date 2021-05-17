@@ -31,7 +31,7 @@ import {
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  bar:any; doughnut:any;
+  bar:any; line:any; pie:any;
   public permisos;
   constructor(private router: Router) {
     this.permisos = localStorage.getItem('permisos')?.split(',');
@@ -67,7 +67,8 @@ export class HomeComponent implements OnInit {
     );
 
       this.bar = document.getElementById('chartBar');
-      this.doughnut = document.getElementById('chartDoughnut');
+      this.line = document.getElementById('chartLine');
+      this.pie = document.getElementById('chartPie');
 
       
       
@@ -108,24 +109,36 @@ export class HomeComponent implements OnInit {
             
         }
     });
-    let doughnutChart = new Chart(this.doughnut  , {
-      type: 'doughnut',
+    let lineChart = new Chart(this.line  , {
+      type: 'line',
       data:{
-         labels: [
-            'Proyecto 1',
-            'Proyecto 2',
-            'Proyecto 3'
+        labels: ["Linea Base 1","Linea Base 2","Linea Base 3"],
+        datasets: [{
+          label: 'My First Dataset',
+          data: [65, 59, 80],
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+      },
+      options:{
+        responsive:false,
+      }
+    });
+
+    let pieChart = new Chart(this.pie, {
+      type: 'pie',
+      data:{
+        labels: ["Usuarios Activos","Usuarios Bloqueados"],
+        datasets: [{
+          // label: 'My First Dataset',
+          data: [300, 50],
+          backgroundColor: [
+            'rgb(51, 204, 0)',
+            'rgb(204, 0, 0)',
           ],
-          datasets: [{
-            label: 'Tareas cerradas por proyecto',
-            data: [300, 50, 100],
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
-              'rgb(255, 205, 86)'
-            ],
-            hoverOffset: 4
-          }],
+          hoverOffset: 4
+        }]
       },
       options:{
         responsive:false,

@@ -1,16 +1,22 @@
 <div class="container">
-  <div class="d-flex justify-content-between">
-    <div class="p-2 border border-dark">
-      <label for="chatBar">Tareas por proyecto (recientes)</label>
-      <canvas id="chartBar" width="200" height="200"></canvas>
-    </div>
-    <div class="p-2 border border-dark">
-      <label for="chartDoughnut">Tareas finalizadas por proyecto (recientes)</label>
-      <canvas id="chartDoughnut" width="200" height="200"></canvas>
-    </div>
-  </div>
   <div class="row">
-    <div class="col-12 col-md-6 mx-auto mt-5">
+    <div class="col-4">
+      <div class="d-flex flex-column mt-3">
+        <div class="p-2 border ">
+          <label for="chartPie">Usuarios</label>
+          <canvas id="chartPie" width="200" height="200"></canvas>
+        </div>
+        <div class="p-2 border ">
+          <label for="chartBar">Tareas por proyecto (recientes)</label>
+          <canvas id="chartBar" width="200" height="200"></canvas>
+        </div>
+        <div class="p-2 border ">
+          <label for="chartLine">Tareas por lineabase (recientes)</label>
+          <canvas id="chartLine" width="200" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-8 col-md-6 mx-auto mt-5">
       <div class="accordion accordion-flush" id="accordionFlushExample">
         <div *ngIf="verificarPermiso('ADMIN')" class="accordion-item">
           <h2 class="accordion-header" id="flush-headingOne">
