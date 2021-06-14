@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RoleService {
   private url = 'https://back-end-inge2.herokuapp.com';
+  //private url = 'http://localhost:3000';
   constructor(private http: HttpClient) {}
 
   getRoles(): Observable<GetRoles> {

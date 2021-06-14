@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { getProyectos, Proyecto } from '../models/proyecto.model';
+import {
+  getProyectos,
+  Proyecto,
+  EstadoTarea,
+  EstadoLB,
+} from '../models/proyecto.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,5 +26,14 @@ export class ProyectoService {
   }
   borrarProyecto(idProyecto: string) {
     return this.http.delete(`${this.url}/proyecto/${idProyecto}`);
+  }
+
+  cantTareas() {
+    return this.http.get<Array<EstadoTarea>>(
+      `${this.url}/proyectos/cant-tareas`
+    );
+  }
+  cantLB() {
+    return this.http.get<Array<EstadoLB>>(`${this.url}/proyectos/cant-lb`);
   }
 }

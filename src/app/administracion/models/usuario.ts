@@ -34,3 +34,11 @@ export interface RespUpdateUsuario {
 export interface ActualizarRole {
   role: string;
 }
+export interface CantidadPorRole {
+  nombre: string;
+  cantidad: number;
+}
+export interface GetCantidadUsuarioPorRole {
+  ok: Boolean;
+  cantidadPorRole: Array<CantidadPorRole>;
+}

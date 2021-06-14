@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Proyecto, Tarea } from '../../models/proyecto.model';
 import { ProyectoService } from '../../services/proyecto.service';
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-proyectos',
@@ -29,6 +31,8 @@ export class ProyectosComponent implements OnInit {
   public tareaEditada: string = '';
   public isEditingProject: boolean = false;
 
+  public isLoading: boolean = false;
+
   constructor(
     private proyectoService: ProyectoService,
     private fb: FormBuilder
@@ -38,7 +42,7 @@ export class ProyectosComponent implements OnInit {
       descripcion: ['', Validators.required],
     });
     this.formularioTarea = this.fb.group({
-      estado: ['', Validators.required],
+      estado: ['pendiente', Validators.required],
       version: [0, Validators.required],
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
@@ -54,8 +58,14 @@ export class ProyectosComponent implements OnInit {
       this.proyectos = resp.proyectos;
     });
   }
+  cerrarModal(idButton: string) {
+    let button = document.getElementById(idButton);
+    button?.click();
+  }
+
   enviarFormulario() {
     if (this.form.valid) {
+      this.isLoading = true;
       let nombre = this.form.get('nombre')?.value;
       let descripcion = this.form.get('descripcion')?.value;
       if (!this.isEditingProject) {
@@ -67,11 +77,28 @@ export class ProyectosComponent implements OnInit {
         };
         this.proyectoService.nuevoProyecto(body).subscribe(
           (resp) => {
-            console.log('EXITOSO!!! Proyecto creado');
+            console.log('EXITOSO!!! El proyecto fue creado');
             this.cargarProyectos();
+            this.cerrarModal('btn-modal-proyecto');
             this.borrarFormulario();
+
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'El proyecto fue creado',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.isLoading = false;
           },
           (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Ocurrió un error',
+              footer: 'No es posible crear el proyecto.',
+            });
+            this.isLoading = false;
             console.warn('ERROR!!! No se creo el proyecto');
           }
         );
@@ -95,10 +122,25 @@ export class ProyectosComponent implements OnInit {
               tareas: [],
             };
             console.log('EXITOSO!!! Proyecto Modificado');
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'El proyecto fue modificado',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.isLoading = false;
           },
           (err) => {
             console.warn('ERROR!!! No se agrego la tarea');
             console.warn(err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Ocurrió un error',
+              footer: 'No es posible modificar el proyecto.',
+            });
+            this.isLoading = false;
           }
         );
       }
@@ -118,6 +160,7 @@ export class ProyectosComponent implements OnInit {
   }
   enviarFormularioTarea(proyecto: Proyecto) {
     if (this.formularioTarea.valid) {
+      this.isLoading = true;
       let titulo = this.formularioTarea.get('titulo')?.value;
       let estado = this.formularioTarea.get('estado')?.value;
       let descripcion = this.formularioTarea.get('descripcion')?.value;
@@ -151,7 +194,7 @@ export class ProyectosComponent implements OnInit {
               _id: tarea._id,
               titulo,
               estado,
-              lineaBase:tarea.lineaBase,
+              lineaBase: tarea.lineaBase,
               version,
               descripcion,
               id_tarea_padre: idTareaPadre,
@@ -170,12 +213,28 @@ export class ProyectosComponent implements OnInit {
       this.proyectoService.modificarProyecto(_id, body).subscribe(
         (resp) => {
           this.cargarProyectos();
+          this.cerrarModal('btn-modal-tarea');
           this.borrarFormularioTarea();
-          console.log('EXITOSO!!! Proyecto Modificado');
+          console.log('Tarea agregada');
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Tarea agregada',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          this.isLoading = false;
         },
         (err) => {
-          console.warn('ERROR!!! No se agrego la tarea');
+          console.warn('No se agrego la tarea');
           console.warn(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error',
+            footer: 'No se agrego la tarea',
+          });
+          this.isLoading = false;
         }
       );
     } else {
@@ -184,7 +243,7 @@ export class ProyectosComponent implements OnInit {
   }
   borrarFormularioTarea() {
     this.formularioTarea.reset({
-      estado: '',
+      estado: 'pendiente',
       version: 0,
       titulo: '',
       descripcion: '',
@@ -199,7 +258,7 @@ export class ProyectosComponent implements OnInit {
     this.tarea = {
       titulo: '',
       estado: '',
-      lineaBase:0,
+      lineaBase: 0,
       version: 0,
       descripcion: '',
     };

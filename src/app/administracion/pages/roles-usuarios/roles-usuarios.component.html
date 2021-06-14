@@ -60,7 +60,7 @@
             <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
             <td>{{ usuario.email }}</td>
             <td>
-              <div class="mb-3">
+              <div *ngIf="listaRoles.length > 0" class="mb-3">
                 <form [formGroup]="formulario">
                   <select formControlName="role" class="form-select">
                     <option value="">Selecciar un Rol</option>

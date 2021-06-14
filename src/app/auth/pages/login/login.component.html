@@ -34,7 +34,9 @@
         <span *ngIf="errorPassword" class="login__error"
           >Por favor ingrese una contraseña válido</span
         >
-        <button *ngIf="!loading" class="login__btn" type="submit">Ingresar</button>
+        <button *ngIf="!loading" class="login__btn" type="submit">
+          Ingresar
+        </button>
         <button *ngIf="loading" class="login__btn" type="button" disabled>
           <span
             class="spinner-border spinner-border-sm"
@@ -43,10 +45,7 @@
           ></span>
           Loading...
         </button>
-        <hr class="login__hr" />
-        <a class="login__recuperar">¿Has olvidado contraseña?</a>
       </form>
     </div>
   </div>
 </div>
-

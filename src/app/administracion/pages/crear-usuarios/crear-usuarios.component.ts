@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoleBD } from '../../models/role';
 import { UsuarioBD } from '../../models/usuario';
 import { RoleService } from '../../services/role.service';
@@ -19,6 +19,8 @@ export class CrearUsuariosComponent implements OnInit {
   public listaUsuarios: Array<UsuarioBD> = [];
   public nuevoUsuario: Boolean = true;
   private idUsuario: string = '';
+
+  public isLoading: Boolean = false;
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -27,11 +29,17 @@ export class CrearUsuariosComponent implements OnInit {
     this.cargarUsuarios();
     this.cargarRoles();
     this.userForm = this.fb.group({
-      nombre: [''],
-      apellido: [''],
-      email: [''],
-      password: [''],
-      role: [''],
+      nombre: ['', [Validators.required]],
+      apellido: ['', [Validators.required]],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$'),
+        ],
+      ],
+      password: ['', []],
+      role: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {}
@@ -91,6 +99,7 @@ export class CrearUsuariosComponent implements OnInit {
   }
   enviarFormulario() {
     if (this.userForm.valid) {
+      this.isLoading = true;
       let nombre = this.userForm.get('nombre')?.value;
       let apellido = this.userForm.get('apellido')?.value;
       let email = this.userForm.get('email')?.value;
@@ -118,6 +127,8 @@ export class CrearUsuariosComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500,
             });
+            this.isLoading = false;
+            this.cerrarModal('btn-modal-usuario');
           },
           (err) => {
             Swal.fire({
@@ -127,6 +138,7 @@ export class CrearUsuariosComponent implements OnInit {
               footer: 'No es posible crear el usuario.',
             });
             console.warn(err);
+            this.isLoading = false;
           }
         );
       } else {
@@ -147,10 +159,18 @@ export class CrearUsuariosComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 1500,
               });
-
               this.cargarUsuarios();
+              this.isLoading = false;
+              this.cerrarModal('btn-modal-usuario');
             } else {
               console.log('No se actualizo el usuario');
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Ocurrió un error',
+                footer: 'No es posible modificar el usuario.',
+              });
+              this.isLoading = false;
             }
           },
           (err) => {
@@ -160,7 +180,7 @@ export class CrearUsuariosComponent implements OnInit {
               text: 'Ocurrió un error',
               footer: 'No es posible modificar el usuario.',
             });
-
+            this.isLoading = false;
             console.warn(err);
           }
         );
@@ -168,6 +188,10 @@ export class CrearUsuariosComponent implements OnInit {
     } else {
       console.log('formulario no válido');
     }
+  }
+  cerrarModal(idButton: string) {
+    let button = document.getElementById(idButton);
+    button?.click();
   }
   eliminarUsuario(id: string) {
     this.usuarioService.deleteUsuario(id).subscribe(

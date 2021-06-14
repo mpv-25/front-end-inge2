@@ -1,149 +1,95 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  Chart,
-  ArcElement,
-  LineElement,
-  BarElement,
-  PointElement,
-  BarController,
-  BubbleController,
-  DoughnutController,
-  LineController,
-  PieController,
-  PolarAreaController,
-  RadarController,
-  ScatterController,
-  CategoryScale,
-  LinearScale,
-  LogarithmicScale,
-  RadialLinearScale,
-  TimeScale,
-  TimeSeriesScale,
-  Filler,
-  Legend,
-  Title,
-  Tooltip
-} from 'chart.js';
+//Importar Charts
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
+
+import { UsuarioService } from 'src/app/administracion/services/usuario.service';
+import { CantidadPorRole } from 'src/app/administracion/models/usuario';
+import { ProyectoService } from 'src/app/desarrollo/services/proyecto.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  bar:any; line:any; pie:any;
+  bar: any;
+  bar2: any;
+  pie: any;
   public permisos;
-  constructor(private router: Router) {
+
+  public cantidadPorRole: Array<CantidadPorRole> = [];
+  public nombres: Array<string> = [];
+  public cantidad: Array<number> = [];
+
+  constructor(
+    private router: Router,
+    private usuarioService: UsuarioService,
+    private proyectoService: ProyectoService
+  ) {
     this.permisos = localStorage.getItem('permisos')?.split(',');
     console.log(this.permisos);
   }
 
   ngOnInit(): void {
-    this.subirInicio();
-
-    Chart.register(
-      ArcElement,
-      LineElement,
-      BarElement,
-      PointElement,
-      BarController,
-      BubbleController,
-      DoughnutController,
-      LineController,
-      PieController,
-      PolarAreaController,
-      RadarController,
-      ScatterController,
-      CategoryScale,
-      LinearScale,
-      LogarithmicScale,
-      RadialLinearScale,
-      TimeScale,
-      TimeSeriesScale,
-      Filler,
-      Legend,
-      Title,
-      Tooltip
-    );
-
-      this.bar = document.getElementById('chartBar');
-      this.line = document.getElementById('chartLine');
-      this.pie = document.getElementById('chartPie');
-
-      
-      
-      let barChart = new Chart(this.bar , {
-        type: 'bar',
-        data: {
-            labels: ['Proyecto 1', 'Proyecto 2', 'Proyecto 3', 'Proyecto 4', 'Proyecto 5', 'Proyecto 6'],
-            datasets: [{
-                label: 'Tareas por proyecto',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                },
-            },
-            responsive:false,
-            // color:'#fff' color de fuente
-            
-        }
-    });
-    let lineChart = new Chart(this.line  , {
-      type: 'line',
-      data:{
-        labels: ["Linea Base 1","Linea Base 2","Linea Base 3"],
-        datasets: [{
-          label: 'My First Dataset',
-          data: [65, 59, 80],
-          fill: false,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
-      },
-      options:{
-        responsive:false,
-      }
-    });
-
-    let pieChart = new Chart(this.pie, {
-      type: 'pie',
-      data:{
-        labels: ["Usuarios Activos","Usuarios Bloqueados"],
-        datasets: [{
-          // label: 'My First Dataset',
-          data: [300, 50],
-          backgroundColor: [
-            'rgb(51, 204, 0)',
-            'rgb(204, 0, 0)',
-          ],
-          hoverOffset: 4
-        }]
-      },
-      options:{
-        responsive:false,
-      }
-    });
+    if (this.permisos?.includes('ADMIN')) {
+      //Crear Gráfico de Pie
+      let nombresPie: Array<string> = [];
+      let cantidadesPie: Array<number> = [];
+      this.usuarioService.cantidadDeUsuarioPorRole().subscribe(async (resp) => {
+        resp.cantidadPorRole.map((data) => {
+          nombresPie.push(data.nombre);
+          cantidadesPie.push(data.cantidad);
+        });
+        this.crearPie(nombresPie, cantidadesPie);
+      });
+    }
+    if (this.permisos?.includes('DES')) {
+      //Crear Gráfico de Bar 1
+      let nombresBar: Array<string> = [];
+      let totalTareasBar: Array<number> = [];
+      let pendienteBar: Array<number> = [];
+      let iniciadoBar: Array<number> = [];
+      let finalizadoBar: Array<number> = [];
+      this.proyectoService.cantTareas().subscribe((resp) => {
+        resp.map((proyecto) => {
+          nombresBar.push(proyecto.nombre);
+          totalTareasBar.push(proyecto.cantidad);
+          pendienteBar.push(proyecto.pendiente);
+          iniciadoBar.push(proyecto.iniciado);
+          finalizadoBar.push(proyecto.finalizado);
+        });
+        this.crearBar(
+          nombresBar,
+          totalTareasBar,
+          pendienteBar,
+          iniciadoBar,
+          finalizadoBar
+        );
+      });
+    }
+    if (this.permisos?.includes('CONFIG')) {
+      //Crear Gráficos de Bar 2
+      let nombresBar2: Array<string> = [];
+      let totalLB: Array<number> = [];
+      let lbAbiertas: Array<number> = [];
+      let lbCerrada: Array<number> = [];
+      this.proyectoService.cantLB().subscribe((resp) => {
+        console.log(resp);
+        resp.map((proyecto) => {
+          nombresBar2.push(proyecto.proyecto);
+          totalLB.push(proyecto.cantidadLB);
+          lbAbiertas.push(proyecto.cantidadLBabiertas);
+          lbCerrada.push(proyecto.cantidadLBcerradas);
+        });
+        this.crearBar2(nombresBar2, totalLB, lbAbiertas, lbCerrada);
+      });
+    }
+  }
+  // Funcion para subir al inicio
+  subirInicio(): void {
+    window.scroll(0, 0);
   }
   verificarPermiso(permiso: string): Boolean {
     let ok: Boolean;
@@ -153,10 +99,6 @@ export class HomeComponent implements OnInit {
       ok = false;
     }
     return ok;
-  }
-  // Funcion para subir al inicio
-  subirInicio(): void {
-    window.scroll(0, 0);
   }
 
   goToCrearRoles() {
@@ -179,5 +121,158 @@ export class HomeComponent implements OnInit {
   goToLineaBase() {
     this.router.navigate(['configuracion/lineabase']);
   }
-  
+
+  //Crear Gráficos
+  async crearPie(nombres: Array<string>, cantidades: Array<number>) {
+    this.pie = document.getElementById('chartPie');
+
+    let colores = [];
+    for await (let nombre of nombres) {
+      colores.push(this.colorRGB());
+    }
+
+    let pieChart = new Chart(this.pie, {
+      type: 'pie',
+      data: {
+        labels: nombres,
+        datasets: [
+          {
+            // label: 'My First Dataset',
+            data: cantidades,
+            backgroundColor: colores,
+            hoverOffset: 4,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+      },
+    });
+  }
+  async crearBar(
+    nombres: Array<string>,
+    totalTareas: Array<number>,
+    tareasPendiente: Array<number>,
+    tareasIniciada: Array<number>,
+    tareasFinalizadas: Array<number>
+  ) {
+    this.bar = document.getElementById('chartBar');
+
+    let colores = [];
+    for await (let element of [0, 1, 2, 3]) {
+      colores.push(this.colorRGB());
+    }
+
+    const data = {
+      labels: nombres,
+      datasets: [
+        {
+          label: 'Total de Tareas',
+          data: totalTareas,
+          borderColor: colores[0],
+          backgroundColor: colores[0],
+        },
+        {
+          label: 'Tareas Pendiente',
+          data: tareasPendiente,
+          borderColor: colores[1],
+          backgroundColor: colores[1],
+        },
+        {
+          label: 'Tareas Iniciadas',
+          data: tareasIniciada,
+          borderColor: colores[2],
+          backgroundColor: colores[2],
+        },
+        {
+          label: 'Tareas Finalizadas',
+          data: tareasFinalizadas,
+          borderColor: colores[3],
+          backgroundColor: colores[3],
+        },
+      ],
+      options: {
+        responsive: true,
+      },
+    };
+    let barChart = new Chart(this.bar, {
+      type: 'bar',
+      data: data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+      },
+    });
+  }
+  async crearBar2(
+    nombresBar2: Array<string>,
+    totalLB: Array<number>,
+    lbAbiertas: Array<number>,
+    lbCerrada: Array<number>
+  ) {
+    this.bar2 = document.getElementById('chartBar2');
+
+    let colores = [];
+    for await (let element of [0, 1, 2]) {
+      colores.push(this.colorRGB());
+    }
+
+    const data = {
+      labels: nombresBar2,
+      datasets: [
+        {
+          label: 'Total de LB',
+          data: totalLB,
+          borderColor: colores[0],
+          backgroundColor: colores[0],
+        },
+        {
+          label: 'LB Abiertas',
+          data: lbAbiertas,
+          borderColor: colores[1],
+          backgroundColor: colores[1],
+        },
+        {
+          label: 'LB Cerradas',
+          data: lbCerrada,
+          borderColor: colores[2],
+          backgroundColor: colores[2],
+        },
+      ],
+      options: {
+        responsive: true,
+      },
+    };
+    let barChart = new Chart(this.bar2, {
+      type: 'bar',
+      data: data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+      },
+    });
+  }
+  //Generar colores RGB de forma aleatoria
+  generarNumero(numero: number) {
+    return (Math.random() * numero).toFixed(0);
+  }
+  colorRGB() {
+    let color =
+      '(' +
+      this.generarNumero(255) +
+      ',' +
+      this.generarNumero(255) +
+      ',' +
+      this.generarNumero(255) +
+      ')';
+    return 'rgb' + color;
+  }
 }

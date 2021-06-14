@@ -6,6 +6,7 @@ import {
   NewUsuario,
   RespUpdateUsuario,
   UpdateUsuario,
+  GetCantidadUsuarioPorRole,
 } from '../models/usuario';
 import { Observable } from 'rxjs';
 
@@ -30,5 +31,10 @@ export class UsuarioService {
   }
   asignarRole(id: string, body: ActualizarRole) {
     return this.http.put(`${this.url}/usuario/role/${id}`, body);
+  }
+  cantidadDeUsuarioPorRole() {
+    return this.http.get<GetCantidadUsuarioPorRole>(
+      `${this.url}/usuarios/por-rol`
+    );
   }
 }

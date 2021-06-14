@@ -1,22 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-4">
-      <div class="d-flex flex-column mt-3">
-        <div class="p-2 border ">
-          <label for="chartPie">Usuarios</label>
-          <canvas id="chartPie" width="200" height="200"></canvas>
-        </div>
-        <div class="p-2 border ">
-          <label for="chartBar">Tareas por proyecto (recientes)</label>
-          <canvas id="chartBar" width="200" height="200"></canvas>
-        </div>
-        <div class="p-2 border ">
-          <label for="chartLine">Tareas por lineabase (recientes)</label>
-          <canvas id="chartLine" width="200" height="200"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="col-8 col-md-6 mx-auto mt-5">
+    <div class="col-12 col-md-4 mx-auto mt-5">
       <div class="accordion accordion-flush" id="accordionFlushExample">
         <div *ngIf="verificarPermiso('ADMIN')" class="accordion-item">
           <h2 class="accordion-header" id="flush-headingOne">
@@ -62,7 +46,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="verificarPermiso('PROY')" class="accordion-item">
+        <div *ngIf="verificarPermiso('DES')" class="accordion-item">
           <h2 class="accordion-header" id="flush-headingTwo">
             <button
               class="accordion-button collapsed"
@@ -112,11 +96,40 @@
             data-bs-parent="#accordionFlushExample"
           >
             <div class="accordion-body d-flex flex-column">
-              <button (click)="goToLineaBase()" type="button" class="btn btn-outline-dark mt-3 mb-2">
-                Linea Base
+              <button
+                (click)="goToLineaBase()"
+                type="button"
+                class="btn btn-outline-dark mt-3 mb-2"
+              >
+                Línea Base
               </button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-8">
+      <div class="d-flex flex-column align-items-center mt-3">
+        <div
+          *ngIf="verificarPermiso('ADMIN')"
+          class="p-2 border text-center m-3"
+        >
+          <label for="chartPie">Usuarios por rol</label>
+          <canvas id="chartPie" class="graficos"></canvas>
+        </div>
+        <div
+          *ngIf="verificarPermiso('DES')"
+          class="p-2 border text-center m-3"
+        >
+          <label for="chartBar">Cantidad de tareas por proyecto</label>
+          <canvas id="chartBar" class="graficos"></canvas>
+        </div>
+        <div
+          *ngIf="verificarPermiso('CONFIG')"
+          class="p-2 border text-center m-3"
+        >
+          <label for="chartLine">Cantidad de líneas base por proyecto</label>
+          <canvas id="chartBar2" class="graficos"></canvas>
         </div>
       </div>
     </div>

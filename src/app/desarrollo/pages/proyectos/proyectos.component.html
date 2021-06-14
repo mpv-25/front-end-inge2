@@ -111,37 +111,15 @@
                             </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngIf="proyecto.tareas">
                           <tr *ngFor="let tarea of proyecto.tareas">
                             <td>{{ tarea.titulo | uppercase }}</td>
                             <td>{{ tarea.estado | uppercase }}</td>
                             <td>{{ tarea.version }}</td>
                             <td>
-                              <div
-                                *ngIf="tarea.estado === 'finalizado'"
-                                class="d-flex flex-row-reverse"
-                              >
+                              <div class="d-flex flex-row-reverse">
                                 <button
-                                  type="button"
-                                  class="btn btn-success"
-                                  disabled
-                                >
-                                  <i class="fas fa-edit"></i>
-                                </button>
-                                <button
-                                  type="button"
-                                  class="btn btn-danger"
-                                  disabled
-                                >
-                                  <i class="far fa-trash-alt"></i>
-                                </button>
-                              </div>
-
-                              <div
-                                *ngIf="tarea.estado != 'finalizado'"
-                                class="d-flex flex-row-reverse"
-                              >
-                                <button
+                                  [disabled]="tarea.lineaBase > 0"
                                   type="button"
                                   class="btn btn-success"
                                   data-bs-toggle="modal"
@@ -152,6 +130,7 @@
                                   <i class="fas fa-edit"></i>
                                 </button>
                                 <button
+                                  [disabled]="tarea.lineaBase > 0"
                                   type="button"
                                   class="btn btn-danger"
                                   (click)="eliminarTarea(proyecto, tarea._id)"
@@ -208,6 +187,7 @@
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Proyecto</h5>
         <button
+          id="btn-modal-proyecto"
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
@@ -241,12 +221,22 @@
                 ></textarea>
                 <label for="floatingTextarea4">Descripción del Proyecto</label>
               </div>
-              <div class="form-group my-3 d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary mr-3">
+
+              <div class="form-group my-3 d-flex justify-content-center">
+                <button
+                  *ngIf="!isLoading"
+                  [disabled]="!form.valid"
+                  type="submit"
+                  class="btn btn-primary mr-3"
+                >
                   Guardar
                 </button>
-                <button type="button" class="btn btn-outline-dark">
-                  Cancelar
+                <button
+                  *ngIf="isLoading"
+                  type="button"
+                  class="btn btn-primary mr-3"
+                >
+                  <i class="fas fa-sync fa-spin"></i>
                 </button>
               </div>
             </form>
@@ -277,6 +267,7 @@
       <div class="modal-header">
         <h5 class="modal-title" id="modal-tarea">Tareas</h5>
         <button
+          id="btn-modal-tarea"
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
@@ -301,9 +292,8 @@
                   id="floatingSelect"
                   aria-label="Floating label select example"
                 >
-                  <option selected value="''">Seleccionar un estado</option>
-                  <option value="iniciado">Iniciado</option>
                   <option value="pendiente">Pendiente</option>
+                  <option value="iniciado">Iniciado</option>
                   <option value="finalizado">Finalizado</option>
                 </select>
                 <label for="floatingSelect">Estado de la Tarea</label>
@@ -342,12 +332,21 @@
                 <label for="floatingSelect">Tarea Padre</label>
               </div>
 
-              <div class="form-group my-3 d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary mr-3">
+              <div class="form-group my-3 d-flex justify-content-center">
+                <button
+                  *ngIf="!isLoading"
+                  [disabled]="!formularioTarea.valid"
+                  type="submit"
+                  class="btn btn-primary mr-3"
+                >
                   Guardar
                 </button>
-                <button type="button" class="btn btn-outline-dark">
-                  Cancelar
+                <button
+                  *ngIf="isLoading"
+                  type="button"
+                  class="btn btn-primary mr-3"
+                >
+                  <i class="fas fa-sync fa-spin"></i>
                 </button>
               </div>
             </form>

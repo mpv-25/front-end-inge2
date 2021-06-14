@@ -17,13 +17,15 @@ export class CrearRolesComponent implements OnInit {
   public listaRoles: Array<RoleBD> = [];
   private nuevoRole = true;
   private idRole: string = '';
+
+  public isLoading: Boolean = false;
   constructor(private fb: FormBuilder, private roleService: RoleService) {
     this.roleForm = this.fb.group({
       nombre: ['', Validators.required],
       descripcion: ['', Validators.required],
       administracion: [false],
+      desarrollo: [false],
       configuracion: [false],
-      proyecto: [false],
     });
     this.cargarListaRoles();
   }
@@ -53,28 +55,29 @@ export class CrearRolesComponent implements OnInit {
       let descripcion = data.role.descripcion;
       let administracion = false;
       let configuracion = false;
-      let proyecto = false;
+      let desarrollo = false;
       if (data.role.permisos.indexOf('ADMIN') >= 0) {
         administracion = true;
       }
+      if (data.role.permisos.indexOf('DES') >= 0) {
+        desarrollo = true;
+      }
       if (data.role.permisos.indexOf('CONFIG') >= 0) {
         configuracion = true;
-      }
-      if (data.role.permisos.indexOf('PROY') >= 0) {
-        proyecto = true;
       }
 
       this.roleForm.reset({
         nombre: nombre,
         descripcion: descripcion,
         administracion: administracion,
+        proyecto: desarrollo,
         configuracion: configuracion,
-        proyecto: proyecto,
       });
     });
   }
   enviarFormulario() {
     if (this.roleForm.valid) {
+      this.isLoading = true;
       let permisos = []; //arreglo de permisos
       let nombre = this.roleForm.get('nombre')?.value;
       let descripcion = this.roleForm.get('descripcion')?.value;
@@ -82,11 +85,11 @@ export class CrearRolesComponent implements OnInit {
       if (this.roleForm.get('administracion')?.value) {
         permisos.push('ADMIN');
       }
+      if (this.roleForm.get('desarrollo')?.value) {
+        permisos.push('DES');
+      }
       if (this.roleForm.get('configuracion')?.value) {
         permisos.push('CONFIG');
-      }
-      if (this.roleForm.get('proyecto')?.value) {
-        permisos.push('PROY');
       }
 
       let body = {
@@ -108,6 +111,8 @@ export class CrearRolesComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500,
             });
+            this.isLoading = false;
+            this.cerrarModal('btn-modal-rol');
           },
           (err) => {
             Swal.fire({
@@ -116,6 +121,7 @@ export class CrearRolesComponent implements OnInit {
               text: 'Ocurrió un error',
               footer: 'No es posible crear el rol.',
             });
+            this.isLoading = false;
             console.warn(err);
           }
         );
@@ -131,6 +137,8 @@ export class CrearRolesComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500,
             });
+            this.isLoading = false;
+            this.cerrarModal('btn-modal-rol');
           },
           (err) => {
             Swal.fire({
@@ -139,12 +147,17 @@ export class CrearRolesComponent implements OnInit {
               text: 'Ocurrió un error',
               footer: 'No es posible modificar el rol.',
             });
+            this.isLoading = false;
 
             console.warn(err);
           }
         );
       }
     }
+  }
+  cerrarModal(idButton: string) {
+    let button = document.getElementById(idButton);
+    button?.click();
   }
   eliminarRole(id: string) {
     this.roleService.eliminarRole(id).subscribe(

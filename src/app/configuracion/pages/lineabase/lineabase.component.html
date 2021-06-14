@@ -62,6 +62,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                   data-bs-whatever="@mdo"
+                  (click)="borrarProyecto()"
                   (click)="seleccionarProyecto(proyecto)"
                 >
                   <i class="fas fa-plus"></i>
@@ -138,6 +139,7 @@
                             <td>
                               <div class="d-flex flex-row-reverse">
                                 <button
+                                  *ngIf="false"
                                   type="button"
                                   class="btn btn-danger"
                                   [disabled]="!lineaBase.abierto"
@@ -169,6 +171,7 @@
                   <i class="fas fa-edit"></i>
                 </button>
                 <button
+                  *ngIf="false"
                   type="button"
                   class="btn btn-danger"
                   [disabled]="!lineaBase.abierto"
@@ -194,7 +197,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Linea Base</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Línea Base</h5>
         <button
           type="button"
           class="btn-close"
@@ -218,9 +221,7 @@
                   id="floatingTextarea4"
                   style="height: 100px"
                 ></textarea>
-                <label for="floatingTextarea4"
-                  >Descripción del la linea base</label
-                >
+                <label for="floatingTextarea4">Descripción</label>
               </div>
               <div class="form-check form-switch">
                 <input
@@ -233,12 +234,21 @@
                   >Abierto para edición</label
                 >
               </div>
-              <div class="form-group my-3 d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary mr-3">
+              <div class="form-group my-3 d-flex justify-content-center">
+                <button
+                  *ngIf="!isLoading"
+                  [disabled]="!formularioLineaBase.valid"
+                  type="submit"
+                  class="btn btn-primary mr-3"
+                >
                   Guardar
                 </button>
-                <button type="button" class="btn btn-outline-dark">
-                  Cancelar
+                <button
+                  *ngIf="isLoading"
+                  type="button"
+                  class="btn btn-primary mr-3"
+                >
+                  <i class="fas fa-sync fa-spin"></i>
                 </button>
               </div>
             </form>
@@ -313,17 +323,21 @@
                 </tbody>
               </table>
 
-              <div class="form-group my-3 d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary mr-3">
+              <div class="form-group my-3 d-flex justify-content-center">
+                <button
+                  *ngIf="!isLoading"
+                  [disabled]="!(tareasLineaBase.length > 0)"
+                  type="submit"
+                  class="btn btn-primary mr-3"
+                >
                   Guardar
                 </button>
                 <button
-                  id="cerrar-modal-tarea"
+                  *ngIf="isLoading"
                   type="button"
-                  class="btn btn-outline-dark"
-                  data-bs-dismiss="modal"
+                  class="btn btn-primary mr-3"
                 >
-                  Cancelar
+                  <i class="fas fa-sync fa-spin"></i>
                 </button>
               </div>
             </form>
@@ -331,7 +345,7 @@
         </div>
         <div class="modal-footer">
           <button
-            id="cerrar-motal-tarea"
+            id="cerrar-modal-tarea"
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"

@@ -30,3 +30,16 @@ export interface putProyecto {
   ok: boolean;
   proyecto: Proyecto;
 }
+export interface EstadoTarea {
+  nombre: string;
+  cantidad: number;
+  finalizado: number;
+  pendiente: number;
+  iniciado: number;
+}
+export interface EstadoLB {
+  proyecto: string;
+  cantidadLB: number;
+  cantidadLBabiertas: number;
+  cantidadLBcerradas: number;
+}

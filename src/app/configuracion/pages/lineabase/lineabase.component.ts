@@ -7,13 +7,16 @@ import {
 } from 'src/app/desarrollo/models/proyecto.model';
 import { ProyectoService } from 'src/app/desarrollo/services/proyecto.service';
 
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-lineabase',
   templateUrl: './lineabase.component.html',
   styleUrls: ['./lineabase.component.css'],
 })
 export class LineabaseComponent implements OnInit {
-  public Title = 'Linea Base';
+  public Title = 'Línea Base';
   public proyectos: Array<Proyecto> = [];
   public tareasTerminadas: Array<Tarea> = [];
   public tareasLineaBase: Array<Tarea> = [];
@@ -42,6 +45,8 @@ export class LineabaseComponent implements OnInit {
     version: 0,
     descripcion: '',
   };
+
+  public isLoading: Boolean = false;
   constructor(
     private proyectoService: ProyectoService,
     private fb: FormBuilder
@@ -112,6 +117,7 @@ export class LineabaseComponent implements OnInit {
     this.tareasTerminadas = [];
     this.tareasLineaBase = [];
     this.isEditProject = false;
+    this.limpiarFormularios();
   }
   modificarLineaBase(proyecto: Proyecto, lineaBase: LineaBase) {
     this.isEditProject = true;
@@ -123,6 +129,7 @@ export class LineabaseComponent implements OnInit {
   }
   enviarFormularioLineaBase() {
     if (this.formularioLineaBase.valid) {
+      this.isLoading = true;
       //Agregar linea base
       if (this.proyecto.lineasBase == null) {
         this.proyecto.lineasBase = [];
@@ -161,9 +168,25 @@ export class LineabaseComponent implements OnInit {
           console.log('SE AGREGO LA LINEA BASE');
           this.cerrarModal('cerrar-modal-lineaBase');
           this.borrarProyecto();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'ÉXITO!!!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          this.isLoading = false;
         },
         (err) => {
           console.warn('ERROR!!! No se agrego la Línea Base');
+          console.warn(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error',
+            footer: 'ERROR!!!',
+          });
+          this.isLoading = false;
           console.warn(err);
         }
       );
@@ -174,10 +197,10 @@ export class LineabaseComponent implements OnInit {
   cerrarModal(idButton: string) {
     let button = document.getElementById(idButton);
     button?.click();
-    console.log('SE CERRO EL MODAL');
   }
   enviarFormularioTareas() {
     if (this.formularioTareas.valid) {
+      this.isLoading = true;
       let _id = this.proyecto._id;
       let lineaBase = this.lineaBase;
       let nuevasTareas: Array<Tarea> = [];
@@ -204,7 +227,6 @@ export class LineabaseComponent implements OnInit {
         }
         return lb;
       });
-
       //Crear el body
       let body = {
         nombre: this.proyecto.nombre,
@@ -217,11 +239,36 @@ export class LineabaseComponent implements OnInit {
         (resp) => {
           console.log('EXITO!!! El proyeccto se guardo con exito', resp);
           this.cerrarModal('cerrar-modal-tarea');
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Se agrego la tarea',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          this.isLoading = false;
         },
         (err) => {
           console.warn('ERROR!!! El proyecto no se guardo', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error',
+            footer: 'No es posible agregar la tarea',
+          });
+          this.isLoading = false;
         }
       );
     }
+  }
+
+  limpiarFormularios() {
+    this.formularioLineaBase.reset({
+      descripcion: '',
+      abierto: true,
+    });
+    this.formularioTareas.reset({
+      tareasEnLineaBase: this.fb.array([]),
+    });
   }
 }
